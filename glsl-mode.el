@@ -357,6 +357,11 @@ the appropriate place for that."
 		     (c-update-modeline))
   (c-initialize-cc-mode t)
   (c-init-language-vars glsl-mode)
+  ;; Let CC Mode's `syntax-table' props take effect
+  ;; (it isn't auto-enabled for glsl-mode), otherwise
+  ;; `c-neutralize-CPP-line' loops forever on a `#define'
+  ;; line with an unbalanced brace, see #20.
+  (setq-local parse-sexp-lookup-properties t)
   (c-common-init 'glsl-mode)
   (cc-imenu-init cc-imenu-c++-generic-expression)
 
